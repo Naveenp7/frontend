@@ -6,8 +6,12 @@
 // Default local backend URL
 const LOCAL_BACKEND_URL = 'http://localhost:5000';
 
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+let activeBackendUrl = REACT_APP_BACKEND_URL || LOCAL_BACKEND_URL;
+
 // Store the active backend URL
-let activeBackendUrl = LOCAL_BACKEND_URL;
+
 let isBackendOnline = false;
 
 /**
@@ -16,7 +20,7 @@ let isBackendOnline = false;
  */
 export const checkBackendStatus = async () => {
   try {
-    const response = await fetch(`${LOCAL_BACKEND_URL}/api/status`, {
+    const response = await fetch(`${activeBackendUrl}/api/status`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -113,15 +117,16 @@ export const getEvent = async (eventId) => {
  * @param {File|Blob} selfieImage - The selfie image file or blob
  * @returns {Promise<Object>} The verification result
  */
-export const verifySelfie = async (eventId, selfieImage) => {
+export const verifySelfie = async (eventId, selfieImage, filename, contentType) => {
   if (!isBackendOnline) {
     throw new Error('Backend is offline');
   }
 
   try {
     const formData = new FormData();
-    formData.append('selfie', selfieImage);
+    formData.append('selfie', selfieImage, filename);
     formData.append('event_id', eventId);
+    formData.append('content_type', contentType);
 
     const response = await fetch(`${activeBackendUrl}/api/verify`, {
       method: 'POST',

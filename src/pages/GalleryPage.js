@@ -85,7 +85,7 @@ const GalleryPage = ({ backendStatus }) => {
     
     try {
       for (let i = 0; i < gallery.images.length; i++) {
-        await downloadImage(gallery.images[i]);
+        await downloadImage(gallery.images[i].url);
         // Add a small delay to prevent browser from blocking downloads
         await new Promise(resolve => setTimeout(resolve, 500));
       }
@@ -143,7 +143,7 @@ const GalleryPage = ({ backendStatus }) => {
                     className="gallery-item"
                     onClick={() => handleImageClick(image)}
                   >
-                    <img src={image} alt={`Gallery photo ${index + 1}`} loading="lazy" />
+                    <img src={image.url} alt={`Gallery photo ${image.filename}`} loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -194,13 +194,13 @@ const GalleryPage = ({ backendStatus }) => {
             </Modal.Header>
             <Modal.Body className="p-0 text-center">
               {selectedImage && (
-                <img src={selectedImage} alt="Full size" className="img-fluid" />
+                <img src={selectedImage.url} alt="Full size" className="img-fluid" />
               )}
             </Modal.Body>
             <Modal.Footer>
               <Button 
                 variant="primary" 
-                onClick={() => selectedImage && downloadImage(selectedImage)}
+                onClick={() => selectedImage && downloadImage(selectedImage.url)}
               >
                 <i className="fas fa-download me-2"></i>
                 Download

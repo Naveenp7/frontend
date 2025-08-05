@@ -103,9 +103,11 @@ const VerifyPage = ({ backendStatus }) => {
       // Convert base64 image to blob
       const response = await fetch(selfieImage);
       const blob = await response.blob();
+      const contentType = blob.type; // Get content type from the blob
+      const filename = `selfie_${Date.now()}.jpeg`; // Create a dummy filename
       
       // Send to API
-      const result = await verifySelfie(eventId, blob);
+      const result = await verifySelfie(eventId, blob, filename, contentType);
       setVerificationResult(result);
       
       // If successful, redirect to gallery after a short delay
