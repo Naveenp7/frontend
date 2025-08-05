@@ -4,7 +4,7 @@
  */
 
 // Default local backend URL
-const LOCAL_BACKEND_URL = 'https://0a1af5795387.ngrok-free.app/';
+const LOCAL_BACKEND_URL = 'http://localhost:5000';
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -32,7 +32,11 @@ export const checkBackendStatus = async () => {
     if (response.ok) {
       const data = await response.json();
       isBackendOnline = true;
-      activeBackendUrl = data.tunnel_url || LOCAL_BACKEND_URL;
+      if (data.tunnel_url && (data.tunnel_url.startsWith('http://') || data.tunnel_url.startsWith('https://'))) {
+        activeBackendUrl = data.tunnel_url;
+      } else {
+        activeBackendUrl = LOCAL_BACKEND_URL;
+      }
       return {
         isOnline: true,
         tunnelUrl: activeBackendUrl
