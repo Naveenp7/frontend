@@ -4,7 +4,7 @@
  */
 
 // Default local backend URL
-const LOCAL_BACKEND_URL = 'http://localhost:5000';
+const LOCAL_BACKEND_URL = 'https://7053021295e0.ngrok-free.app';
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
