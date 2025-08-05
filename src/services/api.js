@@ -4,7 +4,7 @@
  */
 
 // Default local backend URL
-const LOCAL_BACKEND_URL = 'http://localhost:5000';
+const LOCAL_BACKEND_URL = 'https://4762e608b98a.ngrok-free.app';
 
 // Store the active backend URL
 let activeBackendUrl = LOCAL_BACKEND_URL;
