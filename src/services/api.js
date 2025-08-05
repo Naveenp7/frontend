@@ -19,44 +19,14 @@ let isBackendOnline = false;
  * @returns {Promise<{isOnline: boolean, tunnelUrl: string|null}>}
  */
 export const checkBackendStatus = async () => {
-  try {
-    console.log('Checking backend status at:', activeBackendUrl);
-    const response = await fetch(`${activeBackendUrl}/api/status`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      },
-      // Short timeout to avoid long waits if the backend is down
-      signal: AbortSignal.timeout(3000)
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      isBackendOnline = true;
-      if (data.tunnel_url && (data.tunnel_url.startsWith('http://') || data.tunnel_url.startsWith('https://'))) {
-        activeBackendUrl = data.tunnel_url;
-      } else {
-        activeBackendUrl = LOCAL_BACKEND_URL;
-      }
-      return {
-        isOnline: true,
-        tunnelUrl: activeBackendUrl
-      };
-    }
-    
-    isBackendOnline = false;
-    return {
-      isOnline: false,
-      tunnelUrl: null
-    };
-  } catch (error) {
-    console.error('Backend status check failed:', error);
-    isBackendOnline = false;
-    return {
-      isOnline: false,
-      tunnelUrl: null
-    };
-  }
+  // Temporarily hardcode status to bypass network request for debugging
+  isBackendOnline = true;
+  activeBackendUrl = LOCAL_BACKEND_URL;
+  console.log('Bypassing backend status check, returning hardcoded online status.');
+  return {
+    isOnline: true,
+    tunnelUrl: activeBackendUrl
+  };
 };
 
 /**
