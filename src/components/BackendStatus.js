@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap';
 
-const BackendStatus = ({ isOnline, checking, tunnelUrl }) => {
+const BackendStatus = ({ isOnline, checking }) => {
   // Don't show anything if the backend is online
   if (isOnline) {
     return null;

@@ -20,6 +20,7 @@ let isBackendOnline = false;
  */
 export const checkBackendStatus = async () => {
   try {
+    console.log('Checking backend status at:', activeBackendUrl);
     const response = await fetch(`${activeBackendUrl}/api/status`, {
       method: 'GET',
       headers: {
@@ -68,6 +69,7 @@ export const getEvents = async () => {
   }
 
   try {
+    console.log('Fetching events from:', activeBackendUrl);
     const response = await fetch(`${activeBackendUrl}/api/events`, {
       method: 'GET',
       headers: {
@@ -97,6 +99,7 @@ export const getEvent = async (eventId) => {
   }
 
   try {
+    console.log('Fetching event from:', activeBackendUrl);
     const response = await fetch(`${activeBackendUrl}/api/events/${eventId}`, {
       method: 'GET',
       headers: {
@@ -127,6 +130,7 @@ export const verifySelfie = async (eventId, selfieImage, filename, contentType) 
   }
 
   try {
+    console.log('Verifying selfie at:', activeBackendUrl);
     const formData = new FormData();
     formData.append('selfie', selfieImage, filename);
     formData.append('event_id', eventId);
@@ -161,6 +165,7 @@ export const getGallery = async (eventId, clusterId) => {
   }
 
   try {
+    console.log('Fetching gallery from:', activeBackendUrl);
     const response = await fetch(`${activeBackendUrl}/api/gallery/${eventId}/${clusterId}`, {
       method: 'GET',
       headers: {

@@ -92,7 +92,7 @@ const VerifyPage = ({ backendStatus }) => {
     }
     
     if (!backendStatus.isOnline) {
-      setError('Backend is offline. Please try again when the photographer\'s system is online.');
+      setError('Backend is offline. Please try again when the admin\'s system is online.');
       return;
     }
     
@@ -140,14 +140,14 @@ const VerifyPage = ({ backendStatus }) => {
               {!backendStatus.isOnline && !backendStatus.checking ? (
                 <Alert variant="danger">
                   <i className="fas fa-exclamation-circle me-2"></i>
-                  The photographer's system is currently offline. Verification is not available.
+                  The admin's system is currently offline. Verification is not available.
                 </Alert>
               ) : (
                 <>
                   {!eventId && (
                     <Alert variant="warning">
                       <i className="fas fa-info-circle me-2"></i>
-                      No event ID provided. Please scan the QR code provided by the photographer or enter the event ID.
+                      No event ID provided. Please scan the QR code provided by the admin or enter the event ID.
                     </Alert>
                   )}
                   

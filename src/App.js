@@ -19,7 +19,7 @@ import { checkBackendStatus } from './services/api';
 function App() {
   const [backendStatus, setBackendStatus] = useState({
     isOnline: false,
-    tunnelUrl: null,
+    backendUrl: null,
     checking: true
   });
 
@@ -29,13 +29,13 @@ function App() {
         const status = await checkBackendStatus();
         setBackendStatus({
           isOnline: status.isOnline,
-          tunnelUrl: status.tunnelUrl,
+          backendUrl: status.backendUrl,
           checking: false
         });
       } catch (error) {
         setBackendStatus({
           isOnline: false,
-          tunnelUrl: null,
+          backendUrl: null,
           checking: false
         });
       }
@@ -59,7 +59,7 @@ function App() {
           <BackendStatus 
             isOnline={backendStatus.isOnline} 
             checking={backendStatus.checking} 
-            tunnelUrl={backendStatus.tunnelUrl} 
+            backendUrl={backendStatus.backendUrl} 
           />
           
           <Routes>
