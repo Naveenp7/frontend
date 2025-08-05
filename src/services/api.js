@@ -4,7 +4,7 @@
  */
 
 // Default local backend URL
-const LOCAL_BACKEND_URL = 'https://7053021295e0.ngrok-free.app';
+const LOCAL_BACKEND_URL = 'https://d8bf72d49202.ngrok-free.app';
 
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -20,13 +20,49 @@ let isBackendOnline = false;
  */
 export const checkBackendStatus = async () => {
   // Temporarily hardcode status to bypass network request for debugging
-  isBackendOnline = true;
-  activeBackendUrl = LOCAL_BACKEND_URL;
-  console.log('Bypassing backend status check, returning hardcoded online status.');
-  return {
-    isOnline: true,
-    tunnelUrl: activeBackendUrl
-  };
+  try {
+    const response = await fetch(`${LOCAL_BACKEND_URL}/api/status`, {
+      signal: AbortSignal.timeout(5000) // 5-second timeout
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.status === 'online') {
+        isBackendOnline = true;
+        activeBackendUrl = LOCAL_BACKEND_URL;
+        console.log('Connected to local backend:', activeBackendUrl);
+        return { isOnline: true, tunnelUrl: null };
+      }
+    }
+  } catch (error) {
+    console.warn('Local backend not available or responded with error:', error);
+  }
+
+  // Fallback to tunnel URL if local is not available or not online
+  if (REACT_APP_BACKEND_URL) {
+    try {
+      const response = await fetch(`${REACT_APP_BACKEND_URL}/api/status`, {
+        signal: AbortSignal.timeout(5000) // 5-second timeout
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.status === 'online') {
+          isBackendOnline = true;
+          activeBackendUrl = REACT_APP_BACKEND_URL;
+          console.log('Connected to tunnel backend:', activeBackendUrl);
+          return { isOnline: true, tunnelUrl: REACT_APP_BACKEND_URL };
+        }
+      }
+    } catch (error) {
+      console.error('Tunnel backend not available or responded with error:', error);
+    }
+  }
+
+  isBackendOnline = false;
+  activeBackendUrl = LOCAL_BACKEND_URL; // Default to local for consistency, even if offline
+  console.log('Backend is offline. Attempted local and tunnel connections.');
+  return { isOnline: false, tunnelUrl: null };
 };
 
 /**
